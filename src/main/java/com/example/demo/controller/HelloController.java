@@ -6,6 +6,7 @@ import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,43 +17,53 @@ import java.util.concurrent.TimeoutException;
 
 @Controller
 public class HelloController {
+    private static final Logger LOG = Logger.getLogger(HelloController.class);
+
     @GetMapping
     public ModelAndView upload() {
+        LOG.info("Upload started");
         String projectId = "hazel-service-295609";
         String subscriptionId = "pushSub";
         String datasetName = "outjet";
         String tableName = "example";
-        String output = "is updated";
+        String error = "Everything is up to date";
         Subscriber subscriber = null;
         ProjectSubscriptionName subscriptionName =
                 ProjectSubscriptionName.of(projectId, subscriptionId);
-
         try {
             MessageReceiver receiver =
                     (PubsubMessage message, AckReplyConsumer consumer) -> {
+                        try {
                         String data = message.getData().toStringUtf8();
-                        System.out.println(data);
+
+                        LOG.info("File data : " + data);
+
                         JSONObject jsonObject = new JSONObject(data);
                         String id = jsonObject.getString("id");
                         String sourceUri = "gs://" + id.substring(0, id.lastIndexOf("/"));
+
+                        LOG.info("File will be taken from " + sourceUri + " to " + datasetName + "/" + tableName);
+
                         BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
                         TableId tableId = TableId.of(datasetName, tableName);
+
                         LoadJobConfiguration loadConfig =
                                 LoadJobConfiguration.newBuilder(tableId, sourceUri)
                                         .setFormatOptions(FormatOptions.avro())
                                         .setWriteDisposition(JobInfo.WriteDisposition.WRITE_TRUNCATE)
                                         .build();
+
                         Job job = bigquery.create(JobInfo.of(loadConfig));
-                        try {
-                            job = job.waitFor();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        job = job.waitFor();
+
                         if (job.isDone()) {
-                            System.out.println("Avro from GCS successfully loaded in a " + tableName);
+                            LOG.info("Avro from GCS successfully loaded in a " + tableName);
                         } else {
-                            System.out.println("BigQuery was unable to load into the table due to an error:"
+                            LOG.info("BigQuery was unable to load into the table due to an error:"
                                     + job.getStatus().getError());
+                        }
+                        } catch (BigQueryException | InterruptedException e) {
+                            LOG.info("Error: " + e.getMessage());
                         }
 
                         consumer.ack();
@@ -60,13 +71,13 @@ public class HelloController {
 
             subscriber = Subscriber.newBuilder(subscriptionName, receiver).build();
             subscriber.startAsync().awaitRunning();
-            System.out.printf("Listening for messages on %s:\n", subscriptionName.toString());
+            LOG.info("Listening for messages on %s:\n" + subscriptionName.toString());
             subscriber.awaitTerminated(30, TimeUnit.SECONDS);
-        } catch (BigQueryException | TimeoutException e) {
+        } catch (TimeoutException e) {
             subscriber.stopAsync();
-            output = "Error: " + e.getMessage();
+            error = "Service stopped, restart the page";
         }
         return new ModelAndView("index")
-                .addObject("message", output);
+                .addObject("error", error);
     }
 }

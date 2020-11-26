@@ -1,0 +1,69 @@
+[http-nio-8080-exec-1] INFO  com.example.demo.controller.HelloController  - Upload started
+[http-nio-8080-exec-1] INFO  com.example.demo.controller.HelloController  - Listening for messages on %s:
+projects/hazel-service-295609/subscriptions/pushSub
+[Gax-1] INFO  com.example.demo.controller.HelloController  - File data : {
+  "kind": "storage#object",
+  "id": "outjet/example.avro/1606330610812075",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/outjet/o/example.avro",
+  "name": "example.avro",
+  "bucket": "outjet",
+  "generation": "1606330610812075",
+  "metageneration": "1",
+  "contentType": "application/octet-stream",
+  "timeCreated": "2020-11-25T18:56:50.811Z",
+  "updated": "2020-11-25T18:56:50.811Z",
+  "storageClass": "STANDARD",
+  "timeStorageClassUpdated": "2020-11-25T18:56:50.811Z",
+  "size": "306",
+  "md5Hash": "WCJGmGGIXIF1ZUv59BxoSQ==",
+  "mediaLink": "https://www.googleapis.com/download/storage/v1/b/outjet/o/example.avro?generation=1606330610812075&alt=media",
+  "crc32c": "FWNFyg==",
+  "etag": "CKuJzOuvnu0CEAE="
+}
+
+[Gax-3] INFO  com.example.demo.controller.HelloController  - File data : {
+  "kind": "storage#object",
+  "id": "outjet/example.avro/1606378490056670",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/outjet/o/example.avro",
+  "name": "example.avro",
+  "bucket": "outjet",
+  "generation": "1606378490056670",
+  "metageneration": "1",
+  "contentType": "application/octet-stream",
+  "timeCreated": "2020-11-26T08:14:50.056Z",
+  "updated": "2020-11-26T08:14:50.056Z",
+  "storageClass": "STANDARD",
+  "timeStorageClassUpdated": "2020-11-26T08:14:50.056Z",
+  "size": "306",
+  "md5Hash": "WCJGmGGIXIF1ZUv59BxoSQ==",
+  "mediaLink": "https://www.googleapis.com/download/storage/v1/b/outjet/o/example.avro?generation=1606378490056670&alt=media",
+  "crc32c": "FWNFyg==",
+  "etag": "CN6fmZrin+0CEAE="
+}
+
+[Gax-2] INFO  com.example.demo.controller.HelloController  - File data : {
+  "kind": "storage#object",
+  "id": "outjet/example.avro/1606378490056670",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/outjet/o/example.avro",
+  "name": "example.avro",
+  "bucket": "outjet",
+  "generation": "1606378490056670",
+  "metageneration": "1",
+  "contentType": "application/octet-stream",
+  "timeCreated": "2020-11-26T08:14:50.056Z",
+  "updated": "2020-11-26T08:14:50.056Z",
+  "storageClass": "STANDARD",
+  "timeStorageClassUpdated": "2020-11-26T08:14:50.056Z",
+  "size": "306",
+  "md5Hash": "WCJGmGGIXIF1ZUv59BxoSQ==",
+  "mediaLink": "https://www.googleapis.com/download/storage/v1/b/outjet/o/example.avro?generation=1606378490056670&alt=media",
+  "crc32c": "FWNFyg==",
+  "etag": "CN6fmZrin+0CEAE="
+}
+
+[Gax-1] INFO  com.example.demo.controller.HelloController  - File will be taken from gs://outjet/example.avroto outjet/example
+[Gax-3] INFO  com.example.demo.controller.HelloController  - File will be taken from gs://outjet/example.avroto outjet/example
+[Gax-2] INFO  com.example.demo.controller.HelloController  - File will be taken from gs://outjet/example.avroto outjet/example
+[Gax-3] INFO  com.example.demo.controller.HelloController  - Error: Error while reading data, error message: The Apache Avro library failed to parse the header with the following error: Invalid data file. Magic does not match: gs://outjet/example.avro
+[Gax-1] INFO  com.example.demo.controller.HelloController  - Error: Error while reading data, error message: The Apache Avro library failed to parse the header with the following error: Invalid data file. Magic does not match: gs://outjet/example.avro
+[Gax-2] INFO  com.example.demo.controller.HelloController  - Error: Error while reading data, error message: The Apache Avro library failed to parse the header with the following error: Invalid data file. Magic does not match: gs://outjet/example.avro
